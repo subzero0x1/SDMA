@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns="http://www.springframework.org/schema/beans"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd">
+
+    <bean class="org.springframework.beans.factory.config.PropertyPlaceholderConfigurer">
+        <property name="location" value="test.properties"/>
+    </bean>
+
+    <bean id="dailyDutyService" class="ru.svalov.ma.planner.DailyDutyService">
+        <property name="employeesProvider" ref="employeesProvider"/>
+        <property name="dailyDutyEventsService" ref="dailyDutyEventsService"/>
+        <property name="holidayEventsService" ref="holidayEventsService"/>
+        <property name="laborEventsService" ref="laborEventsService"/>
+        <property name="historyLookupDays" value="${dailyduty.historyLookupDays}"/>
+        <property name="parallelDataLoad" value="false"/>
+    </bean>
+
+    <bean id="employeesProvider" class="org.easymock.EasyMock" factory-method="createNiceMock">
+        <constructor-arg value="ru.svalov.ma.data.EmployeesProvider"/>
+    </bean>
+
+    <bean id="dailyDutyEventsService" class="org.easymock.EasyMock" factory-method="createNiceMock">
+        <constructor-arg value="ru.svalov.ma.planner.CalendarEventsService"/>
+    </bean>
+
+    <bean id="holidayEventsService" class="org.easymock.EasyMock" factory-method="createNiceMock">
+        <constructor-arg value="ru.svalov.ma.planner.CalendarEventsService"/>
+    </bean>
+
+    <bean id="laborEventsService" class="org.easymock.EasyMock" factory-method="createNiceMock">
+        <constructor-arg value="ru.svalov.ma.planner.CalendarEventsService"/>
+    </bean>
+
+</beans>
