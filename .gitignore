@@ -14,3 +14,9 @@ hs_err_pid*
 # IDEA Projects
 *.iml
 .idea
+
+# maven
+target
+
+# SDMA
+test.properties
