@@ -24,7 +24,7 @@ public class QuickStartTest extends AbstractTestNGSpringContextTests {
     @Autowired
     private Properties testProperties;
 
-    @Test(enabled = true)
+    @Test(enabled = false)
     public void testInvokeTrello() {
 
         UriComponentsBuilder builder = UriComponentsBuilder.fromHttpUrl(
