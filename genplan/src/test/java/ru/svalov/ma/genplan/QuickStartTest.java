@@ -28,9 +28,8 @@ public class QuickStartTest extends AbstractTestNGSpringContextTests {
     public void testInvokeTrello() {
 
         UriComponentsBuilder builder = UriComponentsBuilder.fromHttpUrl(
-                testProperties.getProperty("app.url")
+                testProperties.getProperty("qst.url")
         )
-                .queryParam("boardId", testProperties.getProperty("app.board.id"))
                 .queryParam("key", testProperties.getProperty("app.key"))
                 .queryParam("token", testProperties.getProperty("app.token"));
 
@@ -46,7 +45,7 @@ public class QuickStartTest extends AbstractTestNGSpringContextTests {
         System.out.println(projects);
     }
 
-    @Test(enabled = true)
+    @Test(enabled = false)
     public void testAddCard() {
 
     }

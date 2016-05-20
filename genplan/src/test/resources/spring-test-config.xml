@@ -3,6 +3,8 @@
        xmlns="http://www.springframework.org/schema/beans"
        xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd">
 
+    <bean id="progressReportService" class="ru.svalov.ma.genplan.ProgressReportServiceImpl"/>
+
     <bean id="testProperties"
           class="org.springframework.beans.factory.config.PropertiesFactoryBean">
         <property name="location" value="test.properties"/>
