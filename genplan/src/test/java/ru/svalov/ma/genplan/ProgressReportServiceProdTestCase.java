@@ -18,7 +18,7 @@ public class ProgressReportServiceProdTestCase extends AbstractTestNGSpringConte
     @Autowired
     private Properties testProperties;
 
-    @Test
+    @Test(enabled = false)
     public void testProcess() {
         UriComponentsBuilder builder = UriComponentsBuilder.fromHttpUrl(
                 testProperties.getProperty("pr.process.url")
@@ -29,7 +29,7 @@ public class ProgressReportServiceProdTestCase extends AbstractTestNGSpringConte
         System.out.println(progressReportService.build(builder.build().encode().toUri()));
     }
 
-    @Test
+    @Test(enabled = false)
     public void testDone() {
         UriComponentsBuilder builder = UriComponentsBuilder.fromHttpUrl(
                 testProperties.getProperty("pr.done.url")

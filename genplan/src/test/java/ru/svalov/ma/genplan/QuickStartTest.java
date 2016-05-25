@@ -25,7 +25,7 @@ public class QuickStartTest extends AbstractTestNGSpringContextTests {
     @Autowired
     private Properties testProperties;
 
-    @Test(enabled = true)
+    @Test(enabled = false)
     public void testInvokeTrello() {
 
         UriComponentsBuilder builder = UriComponentsBuilder.fromHttpUrl(
@@ -56,7 +56,7 @@ public class QuickStartTest extends AbstractTestNGSpringContextTests {
 
         TrelloCard card = new TrelloCard();
         card.setIdBoard(testProperties.getProperty("gp.board.id"));
-        card.setIdList(testProperties.getProperty("gp.list.id"));
+        card.setIdList(testProperties.getProperty("gp.list.go.id"));
         card.setDesc("test desc");
         card.setName("test name");
         card.setDue(new Date());
@@ -70,15 +70,16 @@ public class QuickStartTest extends AbstractTestNGSpringContextTests {
         UriComponentsBuilder builderComments = UriComponentsBuilder.fromHttpUrl(
                 testProperties.getProperty("gp.cards.url")
                         + "/"
-                        + card.getId()
+                        + ret.getId()
                         + "/actions/comments"
         )
-                .queryParam("text", "comment 1");
-        Object test = restTemplate.exchange(
+                .queryParam("key", testProperties.getProperty("app.key"))
+                .queryParam("token", testProperties.getProperty("app.token"));
+
+        String c = restTemplate.postForObject(
                 builderComments.build().encode().toUri(),
-                HttpMethod.POST,
-                null,
-                Object.class
+                "comment 1",
+                String.class
         );
 
         System.out.println(ret);
