@@ -1,4 +1,4 @@
-package ru.svalov.ma.genplan.model;
+package ru.svalov.ma.progressreport.model;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 

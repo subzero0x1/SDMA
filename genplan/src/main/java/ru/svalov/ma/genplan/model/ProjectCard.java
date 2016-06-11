@@ -6,7 +6,7 @@ import java.util.Date;
 import java.util.List;
 
 @JsonIgnoreProperties(ignoreUnknown = true)
-public class TrelloCard {
+public class ProjectCard {
 
     private String id;
     private String name;

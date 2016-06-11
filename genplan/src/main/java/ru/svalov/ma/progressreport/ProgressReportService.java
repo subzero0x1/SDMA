@@ -1,4 +1,4 @@
-package ru.svalov.ma.genplan;
+package ru.svalov.ma.progressreport;
 
 import java.net.URI;
 

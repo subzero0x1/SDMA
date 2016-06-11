@@ -5,6 +5,7 @@ import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.testng.AbstractTestNGSpringContextTests;
 import org.springframework.web.util.UriComponentsBuilder;
 import org.testng.annotations.Test;
+import ru.svalov.ma.progressreport.ProgressReportService;
 
 import java.util.Properties;
 

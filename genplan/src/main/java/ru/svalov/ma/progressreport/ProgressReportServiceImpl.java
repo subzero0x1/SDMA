@@ -1,4 +1,4 @@
-package ru.svalov.ma.genplan;
+package ru.svalov.ma.progressreport;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.ParameterizedTypeReference;
@@ -6,7 +6,7 @@ import org.springframework.http.HttpMethod;
 import org.springframework.http.ResponseEntity;
 import org.springframework.util.StringUtils;
 import org.springframework.web.client.RestTemplate;
-import ru.svalov.ma.genplan.model.ProgressReportItem;
+import ru.svalov.ma.progressreport.model.ProgressReportItem;
 
 import java.net.URI;
 import java.util.List;

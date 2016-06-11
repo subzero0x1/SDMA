@@ -5,9 +5,7 @@
 
     <bean id="progressReportService" class="ru.svalov.ma.progressreport.ProgressReportServiceImpl"/>
 
-    <bean id="projectCardFactory" class="org.easymock.EasyMock" factory-method="createNiceMock">
-        <constructor-arg value="ru.svalov.ma.genplan.ProjectCardFactory"/>
-    </bean>
+    <bean id="projectCardFactory" class="ru.svalov.ma.genplan.ProjectCardFactory"/>
 
     <bean id="reportItemHeadParser" class="ru.svalov.ma.genplan.parser.ReportItemHeadParser"/>
     <bean id="reportItemCommentParser" class="ru.svalov.ma.genplan.parser.ReportItemCommentParser"/>

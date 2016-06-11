@@ -9,8 +9,16 @@ import org.springframework.test.context.testng.AbstractTestNGSpringContextTests;
 import org.springframework.web.client.RestTemplate;
 import org.springframework.web.util.UriComponentsBuilder;
 import org.testng.annotations.Test;
-import ru.svalov.ma.genplan.model.TrelloCard;
+import ru.svalov.ma.genplan.model.ProjectCard;
 
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.net.URISyntaxException;
+import java.net.URL;
+import java.nio.charset.Charset;
+import java.nio.file.Files;
+import java.nio.file.Paths;
+import java.util.Arrays;
 import java.util.Date;
 import java.util.List;
 import java.util.Properties;
@@ -34,18 +42,18 @@ public class QuickStartTest extends AbstractTestNGSpringContextTests {
                 .queryParam("key", testProperties.getProperty("app.key"))
                 .queryParam("token", testProperties.getProperty("app.token"));
 
-        ResponseEntity<List<TrelloCard>> projects = restTemplate.exchange(
+        ResponseEntity<List<ProjectCard>> projects = restTemplate.exchange(
                 builder.build().encode().toUri(),
                 HttpMethod.GET,
                 null,
-                new ParameterizedTypeReference<List<TrelloCard>>() {
+                new ParameterizedTypeReference<List<ProjectCard>>() {
                 }
         );
 
         System.out.println(projects);
     }
 
-    @Test(enabled = true)
+    @Test(enabled = false)
     public void testAddCard() {
 
         UriComponentsBuilder builder = UriComponentsBuilder.fromHttpUrl(
@@ -54,17 +62,17 @@ public class QuickStartTest extends AbstractTestNGSpringContextTests {
                 .queryParam("key", testProperties.getProperty("app.key"))
                 .queryParam("token", testProperties.getProperty("app.token"));
 
-        TrelloCard card = new TrelloCard();
+        ProjectCard card = new ProjectCard();
         card.setIdBoard(testProperties.getProperty("gp.board.id"));
         card.setIdList(testProperties.getProperty("gp.list.go.id"));
         card.setDesc("test desc");
         card.setName("test name");
         card.setDue(new Date());
 
-        TrelloCard ret = restTemplate.postForObject(
+        ProjectCard ret = restTemplate.postForObject(
                 builder.build().encode().toUri(),
                 card,
-                TrelloCard.class
+                ProjectCard.class
         );
 
         UriComponentsBuilder builderComments = UriComponentsBuilder.fromHttpUrl(
@@ -85,4 +93,30 @@ public class QuickStartTest extends AbstractTestNGSpringContextTests {
         System.out.println(ret);
     }
 
+    @Test(enabled = false)
+    public void testReadInputData() {
+
+        final URL dataUrl = getClass().getClassLoader().getResource("status_report_data.csv");
+        if (dataUrl == null) {
+            throw new IllegalStateException();
+        }
+        try {
+            final BufferedReader reader = Files.newBufferedReader(
+                    Paths.get(dataUrl.toURI()), Charset.forName("cp1251")
+            );
+
+            // for each line count number of @
+            // 11 - new item start with comment beginning
+            // 1 - comment line
+            // 3 - last comment line with new item end
+
+            reader
+                    .lines()
+                    .skip(5)
+                    .map(line -> Arrays.asList(line.split("@")).size())
+                    .forEach(System.out::println);
+        } catch (IOException | URISyntaxException e) {
+            e.printStackTrace();
+        }
+    }
 }
