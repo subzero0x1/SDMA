@@ -32,6 +32,7 @@
     <bean id="dailyDutyService" class="ru.svalov.ma.planner.DailyDutyService">
         <property name="employeesProvider" ref="employeesProvider"/>
         <property name="dailyDutyEventsService" ref="dailyDutyEventsService"/>
+        <property name="architectDDEventsService" ref="architectDDEventsService"/>
         <property name="holidayEventsService" ref="holidayEventsService"/>
         <property name="laborEventsService" ref="laborEventsService"/>
         <property name="historyLookupDays" value="${dailyduty.historyLookupDays}"/>
@@ -42,6 +43,15 @@
         <property name="calendarId" value="${events.calendar.id}"/>
         <property name="eventFactory" ref="calendarEventFactory"/>
         <property name="maxResults" value="${events.calendar.maxResults}"/>
+        <property name="summaryService" ref="summaryService"/>
+        <property name="calendarService" ref="calendarService"/>
+        <property name="reminderMinutes" value="${dailyduty.reminder.minutes}"/>
+    </bean>
+
+    <bean id="architectDDEventsService" class="ru.svalov.ma.planner.google.GoogleCalendarEventsService">
+        <property name="calendarId" value="${architect.events.calendar.id}"/>
+        <property name="eventFactory" ref="calendarEventFactory"/>
+        <property name="maxResults" value="${architect.events.calendar.maxResults}"/>
         <property name="summaryService" ref="summaryService"/>
         <property name="calendarService" ref="calendarService"/>
         <property name="reminderMinutes" value="${dailyduty.reminder.minutes}"/>

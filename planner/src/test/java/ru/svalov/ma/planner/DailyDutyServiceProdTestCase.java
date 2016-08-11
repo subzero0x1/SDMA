@@ -13,10 +13,10 @@ public class DailyDutyServiceProdTestCase extends AbstractTestNGSpringContextTes
     @Autowired
     private DailyDutyService service;
 
-    @Test(enabled = false)
+    @Test
     public void testBuild() {
-        //final LocalDate startDate = LocalDate.of(2015, 9, 2);
-        final LocalDate startDate = LocalDate.now();
+        final LocalDate startDate = LocalDate.of(2016, 8, 15);
+//        final LocalDate startDate = LocalDate.now();
         final LocalDate endDate = startDate.plusMonths(1);
 
         service.schedule(startDate, endDate);

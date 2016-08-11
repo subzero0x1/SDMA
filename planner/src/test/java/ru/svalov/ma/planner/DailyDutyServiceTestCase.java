@@ -34,14 +34,14 @@ public class DailyDutyServiceTestCase extends AbstractTestNGSpringContextTests {
         Stream
                 .iterate(startDate, d -> d.plusDays(1))
                 .limit(count)
-                .forEach(date -> logins.stream().forEach(login -> {
-                                    CalendarEvent event = new CalendarEvent();
-                                    event.setId(UUID.randomUUID().toString());
-                                    event.setDate(date);
-                                    event.setSubject(login);
-                                    event.setType(EventType.VACATION);
-                                    events.add(event);
-                                }
+                .forEach(date -> logins.forEach(login -> {
+                            CalendarEvent event = new CalendarEvent();
+                            event.setId(UUID.randomUUID().toString());
+                            event.setDate(date);
+                            event.setSubject(login);
+                            event.setType(EventType.VACATION);
+                            events.add(event);
+                        }
                         )
                 );
 

@@ -50,7 +50,7 @@ public class GoogleCredentialService implements InitializingBean {
                             System.getProperty("user.home"),
                             credentialsStore
                     ));
-        } catch (Throwable t) {
+        } catch (Exception t) {
             t.printStackTrace();
             System.exit(1);
         }

@@ -29,6 +29,7 @@ public class GoogleSpreadsheetEmployeesProvider implements EmployeesProvider {
         employee.setLogin(getEntryValue(entry, EmployeeFieldTag.LOGIN.getTag()));
         employee.setName(getEntryValue(entry, EmployeeFieldTag.NAME.getTag()));
         employee.setDailyDuty(YES.equals(getEntryValue(entry, EmployeeFieldTag.DAILY_DUTY.getTag())));
+        employee.setArchitectDailyDuty(YES.equals(getEntryValue(entry, EmployeeFieldTag.ARCHITECT_DAILY_DUTY.getTag())));
         employee.setEmail(getEntryValue(entry, EmployeeFieldTag.EMAIL.getTag()));
         employee.setGmail(getEntryValue(entry, EmployeeFieldTag.GMAIL.getTag()));
         employee.setPermanent(true);
@@ -65,6 +66,7 @@ public class GoogleSpreadsheetEmployeesProvider implements EmployeesProvider {
         LOGIN("login"),
         NAME("name"),
         DAILY_DUTY("dailyduty"),
+        ARCHITECT_DAILY_DUTY("architectdd"),
         EMAIL("e-mail"),
         GMAIL("gmail");
 

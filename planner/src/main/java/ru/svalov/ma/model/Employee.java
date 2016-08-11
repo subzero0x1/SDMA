@@ -10,6 +10,8 @@ public class Employee {
 
     private boolean dailyDuty;
 
+    private boolean architectDailyDuty;
+
     private String email;
 
     private String gmail;
@@ -44,6 +46,14 @@ public class Employee {
 
     public void setDailyDuty(boolean dailyDuty) {
         this.dailyDuty = dailyDuty;
+    }
+
+    public boolean isArchitectDailyDuty() {
+        return architectDailyDuty;
+    }
+
+    public void setArchitectDailyDuty(boolean architectDailyDuty) {
+        this.architectDailyDuty = architectDailyDuty;
     }
 
     public String getEmail() {

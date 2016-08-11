@@ -10,6 +10,7 @@ public enum EventType {
     FAKEWORK("FWK"),
     TEMPWORK("TWK"),
     DAILY_DUTY("DD"),
+    ARCH_DAILY_DUTY("ADD"),
     SICK("SIK"),
     BUILD("BLD"),
     REMOTE("RMT");
