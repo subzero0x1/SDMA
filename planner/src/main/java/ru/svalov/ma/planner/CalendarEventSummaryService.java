@@ -8,6 +8,10 @@ public class CalendarEventSummaryService {
 
     private char summarySeparator;
 
+    public CalendarEventSummaryService(char summarySeparator) {
+        this.summarySeparator = summarySeparator;
+    }
+
     public String create(String typeId, String subject) {
         return typeId + summarySeparator + subject;
     }
@@ -44,11 +48,11 @@ public class CalendarEventSummaryService {
         }
     }
 
-    public char getSummarySeparator() {
-        return summarySeparator;
-    }
-
     public void setSummarySeparator(char summarySeparator) {
         this.summarySeparator = summarySeparator;
+    }
+
+    public char getSummarySeparator() {
+        return summarySeparator;
     }
 }

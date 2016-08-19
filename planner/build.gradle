@@ -1,0 +1,18 @@
+group = 'ru.svalov.management-assistant'
+description = ''
+dependencies {
+    compile group: 'com.google.apis', name: 'google-api-services-calendar', version:'v3-rev129-1.20.0'
+    compile group: 'com.google.apis', name: 'google-api-services-oauth2', version:'v2-rev92-1.20.0'
+    compile group: 'com.google.oauth-client', name: 'google-oauth-client-java6', version:'1.20.0'
+    compile group: 'com.google.oauth-client', name: 'google-oauth-client-jetty', version:'1.20.0'
+    compile group: 'com.google.gdata', name: 'core', version:'1.47.1'
+    compile group: 'org.springframework', name: 'spring-core', version:'4.2.0.RELEASE'
+    compile group: 'org.springframework', name: 'spring-context', version:'4.2.0.RELEASE'
+    compile group: 'org.springframework', name: 'spring-test', version:'4.2.0.RELEASE'
+    compile 'ch.qos.logback:logback-classic:1.1.7'
+    compile 'ch.qos.logback:logback-core:1.1.7'
+
+    testCompile group: 'org.testng', name: 'testng', version:'6.9.4'
+    testCompile group: 'org.easymock', name: 'easymock', version:'3.3.1'
+}
+test.useTestNG()

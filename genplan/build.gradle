@@ -1,0 +1,12 @@
+group = 'ru.svalov.management-assistant'
+description = 'Projects Status Visualizer'
+dependencies {
+    compile group: 'org.springframework', name: 'spring-core', version:'4.2.0.RELEASE'
+    compile group: 'org.springframework', name: 'spring-context', version:'4.2.0.RELEASE'
+    compile group: 'org.springframework', name: 'spring-test', version:'4.2.0.RELEASE'
+    compile group: 'org.springframework', name: 'spring-web', version:'4.2.0.RELEASE'
+    compile group: 'com.fasterxml.jackson.core', name: 'jackson-databind', version:'2.7.4'
+    testCompile group: 'org.testng', name: 'testng', version:'6.9.4'
+    testCompile group: 'org.easymock', name: 'easymock', version:'3.3.1'
+}
+test.useTestNG()

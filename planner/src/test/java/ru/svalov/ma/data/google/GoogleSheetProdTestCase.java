@@ -6,13 +6,13 @@ import org.springframework.context.annotation.PropertySource;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.testng.AbstractTestNGSpringContextTests;
 import org.testng.annotations.Test;
+import ru.svalov.ProdConfig;
 import ru.svalov.ma.model.Employee;
 
 import java.io.IOException;
 import java.time.LocalDate;
 
-@ContextConfiguration(locations = {"classpath:spring-prod-config-google.xml"})
-@PropertySource("classpath*:test.properties")
+@ContextConfiguration(classes = ProdConfig.class)
 public class GoogleSheetProdTestCase extends AbstractTestNGSpringContextTests {
 
     @Autowired
@@ -25,7 +25,7 @@ public class GoogleSheetProdTestCase extends AbstractTestNGSpringContextTests {
     @Test(enabled = false)
     public void test() throws IOException, ServiceException {
         employeesProvider
-                .get(LocalDate.MIN, LocalDate.MAX)
+                .get()
                 .forEach(GoogleSheetProdTestCase::printEmployee);
     }
 }

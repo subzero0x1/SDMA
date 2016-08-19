@@ -10,6 +10,10 @@ public class GoogleCalendarEventFactory {
 
     private CalendarEventSummaryService summaryService;
 
+    public GoogleCalendarEventFactory(CalendarEventSummaryService summaryService) {
+        this.summaryService = summaryService;
+    }
+
     public CalendarEvent create(Event event, LocalDate date) {
         final CalendarEvent calendarEvent = new CalendarEvent();
         calendarEvent.setId(event.getId());
@@ -17,9 +21,5 @@ public class GoogleCalendarEventFactory {
         calendarEvent.setType(summaryService.parseType(event.getSummary()));
         calendarEvent.setSubject(summaryService.parseSubject(event.getSummary()));
         return calendarEvent;
-    }
-
-    public void setSummaryService(CalendarEventSummaryService summaryService) {
-        this.summaryService = summaryService;
     }
 }

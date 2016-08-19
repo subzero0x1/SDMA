@@ -5,6 +5,7 @@ import com.google.gdata.data.spreadsheet.ListEntry;
 import com.google.gdata.data.spreadsheet.ListFeed;
 import com.google.gdata.data.spreadsheet.SpreadsheetEntry;
 import com.google.gdata.util.ServiceException;
+import org.springframework.beans.factory.annotation.Value;
 import ru.svalov.ma.data.EmployeeProviderException;
 import ru.svalov.ma.data.EmployeesProvider;
 import ru.svalov.ma.model.Employee;
@@ -20,9 +21,15 @@ import java.util.stream.Stream;
 public class GoogleSpreadsheetEmployeesProvider implements EmployeesProvider {
 
     private static final String YES = "Yes";
+
+    @Value("${employee.sheet.url}")
     private String sheetUrl;
 
     private GoogleSheetsService sheetsService;
+
+    public GoogleSpreadsheetEmployeesProvider(GoogleSheetsService sheetsService) {
+        this.sheetsService = sheetsService;
+    }
 
     private static Employee createEmployee(ListEntry entry) {
         Employee employee = new Employee();
@@ -30,6 +37,8 @@ public class GoogleSpreadsheetEmployeesProvider implements EmployeesProvider {
         employee.setName(getEntryValue(entry, EmployeeFieldTag.NAME.getTag()));
         employee.setDailyDuty(YES.equals(getEntryValue(entry, EmployeeFieldTag.DAILY_DUTY.getTag())));
         employee.setArchitectDailyDuty(YES.equals(getEntryValue(entry, EmployeeFieldTag.ARCHITECT_DAILY_DUTY.getTag())));
+        employee.setRetailDailyDuty(YES.equals(getEntryValue(entry, EmployeeFieldTag.RETAIL_DAILY_DUTY.getTag())));
+        employee.setRetailFrontDailyDuty(YES.equals(getEntryValue(entry, EmployeeFieldTag.RETAIL_FRONT_DAILY_DUTY.getTag())));
         employee.setEmail(getEntryValue(entry, EmployeeFieldTag.EMAIL.getTag()));
         employee.setGmail(getEntryValue(entry, EmployeeFieldTag.GMAIL.getTag()));
         employee.setPermanent(true);
@@ -40,7 +49,7 @@ public class GoogleSpreadsheetEmployeesProvider implements EmployeesProvider {
         return entry.getCustomElements().getValue(tag);
     }
 
-    public Stream<Employee> get(LocalDate startDate, LocalDate endDate) {
+    public Stream<Employee> get() {
         try {
             SpreadsheetService service = sheetsService.getSheetsService();
             SpreadsheetEntry spreadsheet = service.getEntry(new URL(sheetUrl), SpreadsheetEntry.class);
@@ -67,6 +76,8 @@ public class GoogleSpreadsheetEmployeesProvider implements EmployeesProvider {
         NAME("name"),
         DAILY_DUTY("dailyduty"),
         ARCHITECT_DAILY_DUTY("architectdd"),
+        RETAIL_DAILY_DUTY("retaildd"),
+        RETAIL_FRONT_DAILY_DUTY("retailfrontdd"),
         EMAIL("e-mail"),
         GMAIL("gmail");
 

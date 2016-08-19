@@ -9,6 +9,7 @@ import ru.svalov.ma.model.CalendarEvent;
 import ru.svalov.ma.model.CalendarEvents;
 import ru.svalov.ma.model.Employee;
 import ru.svalov.ma.model.EventType;
+import ru.svalov.util.InfiniteIterator;
 
 import java.time.LocalDate;
 import java.util.ArrayList;
@@ -27,6 +28,10 @@ public class DailyDutyServiceTestCase extends AbstractTestNGSpringContextTests {
 
     @Autowired
     private DailyDutyService service;
+    @Autowired
+    private EmployeesProvider employeesProvider;
+    @Autowired
+    private CalendarEventsService dailyDutyEventsService;
 
     private static CalendarEvents createHolidayEvents(LocalDate startDate, int count, List<String> logins) {
         CalendarEvents events = new CalendarEvents();
@@ -120,13 +125,11 @@ public class DailyDutyServiceTestCase extends AbstractTestNGSpringContextTests {
         // expect employees
         final List<Employee> employees = createEmployees();
         employees.get(2).setDailyDuty(false);
-        final EmployeesProvider employeesProvider = service.getEmployeesProvider();
-        expect(employeesProvider.get(eq(startDate), eq(endDate)))
+        expect(employeesProvider.get())
                 .andReturn(employees.stream());
         replay(employeesProvider);
 
         // expect last employee was on duty
-        final CalendarEventsService dailyDutyEventsService = service.getDailyDutyEventsService();
         expect(dailyDutyEventsService.get(
                         eq(startDate.minusDays(service.getHistoryLookupDays())),
                         eq(startDate)
@@ -206,7 +209,7 @@ public class DailyDutyServiceTestCase extends AbstractTestNGSpringContextTests {
                 .andReturn(createHolidayEvents(startDate, DAYS_COUNT, subjects));
         replay(holidayEventsService);
 
-        service.schedule(startDate, endDate);
+        service.schedule(startDate, endDate, new InfiniteIterator<> (employees), dailyDutyEventsService);
 
         verify(employeesProvider);
         verify(dailyDutyEventsService);

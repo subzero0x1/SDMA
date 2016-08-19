@@ -7,11 +7,5 @@ import java.util.stream.Stream;
 
 public interface EmployeesProvider {
 
-    /**
-     * get employees worked in time period
-     *
-     * @param startDate start date of time period
-     * @param endDate   end date of time period
-     */
-    Stream<Employee> get(LocalDate startDate, LocalDate endDate);
+    Stream<Employee> get();
 }

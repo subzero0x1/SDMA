@@ -29,6 +29,13 @@ public class GoogleCredentialService implements InitializingBean {
     private String credentialsStore;
     private List<String> scopes;
 
+    public GoogleCredentialService(String accessType, String clientSecret, String credentialsStore, List<String> scopes) {
+        this.accessType = accessType;
+        this.clientSecret = clientSecret;
+        this.credentialsStore = credentialsStore;
+        this.scopes = scopes;
+    }
+
     public Credential authorize() throws IOException {
         InputStream in = GoogleCalendarService.class.getResourceAsStream("/" + clientSecret);
         GoogleClientSecrets clientSecrets = GoogleClientSecrets.load(JSON_FACTORY, new InputStreamReader(in));
@@ -54,21 +61,5 @@ public class GoogleCredentialService implements InitializingBean {
             t.printStackTrace();
             System.exit(1);
         }
-    }
-
-    public void setAccessType(String accessType) {
-        this.accessType = accessType;
-    }
-
-    public void setClientSecret(String clientSecret) {
-        this.clientSecret = clientSecret;
-    }
-
-    public void setCredentialsStore(String credentialsStore) {
-        this.credentialsStore = credentialsStore;
-    }
-
-    public void setScopes(List<String> scopes) {
-        this.scopes = scopes;
     }
 }

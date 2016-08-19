@@ -1,5 +1,7 @@
 package ru.svalov.ma.planner;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import ru.svalov.ma.data.EmployeesProvider;
 import ru.svalov.ma.model.*;
 import ru.svalov.util.InfiniteIterator;
@@ -14,18 +16,20 @@ import java.util.stream.Stream;
 import static java.time.temporal.ChronoUnit.DAYS;
 
 public class DailyDutyService {
+    private static final Logger LOGGER = LoggerFactory.getLogger(DailyDutyService.class);
 
     // todo : add logging and performance measure
 
-    private EmployeesProvider employeesProvider;
-
-    private CalendarEventsService dailyDutyEventsService;
-    private CalendarEventsService architectDDEventsService;
     private CalendarEventsService laborEventsService;
     private CalendarEventsService holidayEventsService;
 
     private int historyLookupDays = 20;
     private boolean parallelDataLoad = false;
+
+    public DailyDutyService(CalendarEventsService laborEventsService, CalendarEventsService holidayEventsService) {
+        this.laborEventsService = laborEventsService;
+        this.holidayEventsService = holidayEventsService;
+    }
 
     private static boolean isEqualEvent(Employee employee, List<CalendarEvent> events) {
         return events.size() == 1 &&
@@ -41,32 +45,22 @@ public class DailyDutyService {
         return employee;
     }
 
-    public void schedule(final LocalDate startDate, final LocalDate endDate) {
+    public int schedule(final LocalDate startDate, final LocalDate endDate, InfiniteIterator<Employee> empIt, CalendarEventsService
+            dailyDutyEventsService) {
         Objects.requireNonNull(startDate, "startDate");
         Objects.requireNonNull(endDate, "endDate");
         if (startDate.isAfter(endDate)) {
             throw new IllegalArgumentException("startDate is after endDate");
         }
 
-        final InfiniteIterator<Employee> empIt;
-        final InfiniteIterator<Employee> archIt;
-        CalendarEvents dailyDutyEvents;
-        CalendarEvents architectDailyDutyEvents;
         LaborCalendarEvents laborEvents;
         CalendarEvents holidayEvents;
         if (parallelDataLoad) {
             // todo : call providers in separate threads
-//            empIt = null;
-//            dailyDutyEvents = null;
-//            laborEvents = null;
-//            holidayEvents = null;
             throw new UnsupportedOperationException();
         } else {
-            empIt = readEmployees(startDate, endDate);
-            archIt = readArchitects(startDate, endDate);
-
             // find last employee was on duty
-            final String lastOnDuty = readLastOnDuty(startDate);
+            final String lastOnDuty = readLastOnDuty(startDate, dailyDutyEventsService);
 
             // rewind iterator to last employee was on duty
             while (lastOnDuty != null && empIt.hasNext()) {
@@ -75,35 +69,36 @@ public class DailyDutyService {
                 }
             }
 
-            dailyDutyEvents = dailyDutyEventsService.get(startDate, endDate);
-            architectDailyDutyEvents = architectDDEventsService.get(startDate, endDate);
             laborEvents = new LaborCalendarEvents(laborEventsService.get(startDate, endDate));
             holidayEvents = holidayEventsService.get(startDate, endDate);
         }
 
-        Stream.iterate(startDate, d -> d.plusDays(1))
+        CalendarEvents dailyDutyEvents = dailyDutyEventsService.get(startDate, endDate);
+        return Stream.iterate(startDate, d -> d.plusDays(1))
                 .limit(startDate.until(endDate, DAYS))
-                .forEach(currentDate -> {
+                .mapToInt(currentDate -> {
                             if (laborEvents.isWeekendOrHoliday(currentDate)) {
-                                deleteOutdatedEvents(dailyDutyEvents, currentDate);
-                                deleteOutdatedEvents(architectDailyDutyEvents, currentDate);
+                                deleteOutdatedEvents(dailyDutyEvents, currentDate, dailyDutyEventsService);
                             } else {
-                                processDate(empIt, dailyDutyEvents, holidayEvents, currentDate, EventType.DAILY_DUTY, dailyDutyEventsService);
-                                processDate(archIt, architectDailyDutyEvents, holidayEvents, currentDate, EventType.ARCH_DAILY_DUTY, architectDDEventsService);
+                                return processDate(empIt, dailyDutyEvents, holidayEvents, currentDate, EventType.DAILY_DUTY, dailyDutyEventsService);
                             }
+                            return 0;
                         }
-                );
+                ).sum();
     }
 
-    private void processDate(InfiniteIterator<Employee> empIt, CalendarEvents dailyDutyEvents, CalendarEvents holidayEvents, LocalDate currentDate, EventType dailyDuty, CalendarEventsService dailyDutyEventsService) {
+    private int processDate(InfiniteIterator<Employee> empIt, CalendarEvents dailyDutyEvents, CalendarEvents holidayEvents, LocalDate currentDate,
+                          EventType dailyDuty, CalendarEventsService dailyDutyEventsService) {
         Employee employee = findNextForDailyDuty(empIt, holidayEvents, currentDate);
         List<CalendarEvent> events = dailyDutyEvents.get(currentDate, dailyDuty);
         if (!isEqualEvent(employee, events)) {
             if (!events.isEmpty()) {
-                deleteOutdatedEvents(dailyDutyEvents, currentDate);
+                deleteOutdatedEvents(dailyDutyEvents, currentDate, dailyDutyEventsService);
             }
             createEvent(dailyDutyEventsService, currentDate, employee);
+            return 1;
         }
+        return 0;
     }
 
     private void createEvent(CalendarEventsService eventsService, LocalDate currentDate, Employee employee) {
@@ -113,9 +108,10 @@ public class DailyDutyService {
         event.setSubject(employee.getLogin());
         event.getAttendees().add(employee);
         eventsService.create(event);
+        LOGGER.debug("Event created: {}", event);
     }
 
-    private String readLastOnDuty(LocalDate startDate) {
+    private String readLastOnDuty(LocalDate startDate, CalendarEventsService dailyDutyEventsService) {
         final Iterator<CalendarEvent> lastOnDutyIterator = dailyDutyEventsService.get(
                 startDate.minusDays(historyLookupDays),
                 startDate
@@ -128,47 +124,13 @@ public class DailyDutyService {
         return lastOnDutyIterator.hasNext() ? lastOnDutyIterator.next().getSubject() : null;
     }
 
-    private InfiniteIterator<Employee> readEmployees(LocalDate startDate, LocalDate endDate) {
-        return new InfiniteIterator<>(employeesProvider
-                .get(startDate, endDate)
-                .filter(Employee::isDailyDuty)
-                .sorted((e1, e2) -> e1.getLogin().compareTo(e2.getLogin()))
-                .collect(Collectors.toList())
-        );
-    }
-
-    private InfiniteIterator<Employee> readArchitects(LocalDate startDate, LocalDate endDate) {
-        return new InfiniteIterator<>(employeesProvider
-                .get(startDate, endDate)
-                .filter(Employee::isArchitectDailyDuty)
-                .sorted((e1, e2) -> e1.getLogin().compareTo(e2.getLogin()))
-                .collect(Collectors.toList())
-        );
-    }
-
-    private void deleteOutdatedEvents(CalendarEvents events, LocalDate date) {
+    private void deleteOutdatedEvents(CalendarEvents events, LocalDate date, CalendarEventsService dailyDutyEventsService) {
         if (events.contains(date, EventType.DAILY_DUTY)) {
             List<CalendarEvent> deprecated = events.get(date, EventType.DAILY_DUTY);
             for (CalendarEvent d : deprecated) {
                 dailyDutyEventsService.delete(d.getId());
             }
         }
-    }
-
-    public EmployeesProvider getEmployeesProvider() {
-        return employeesProvider;
-    }
-
-    public void setEmployeesProvider(EmployeesProvider employeesProvider) {
-        this.employeesProvider = employeesProvider;
-    }
-
-    public CalendarEventsService getDailyDutyEventsService() {
-        return dailyDutyEventsService;
-    }
-
-    public void setDailyDutyEventsService(CalendarEventsService dailyDutyEventsService) {
-        this.dailyDutyEventsService = dailyDutyEventsService;
     }
 
     public CalendarEventsService getLaborEventsService() {
@@ -203,11 +165,4 @@ public class DailyDutyService {
         this.parallelDataLoad = parallelDataLoad;
     }
 
-    public CalendarEventsService getArchitectDDEventsService() {
-        return architectDDEventsService;
-    }
-
-    public void setArchitectDDEventsService(CalendarEventsService architectDDEventsService) {
-        this.architectDDEventsService = architectDDEventsService;
-    }
 }

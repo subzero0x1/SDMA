@@ -17,7 +17,7 @@ public class CalendarEventSummaryServiceTestCase {
 
     @BeforeClass
     public void beforeClass() {
-        factory = new CalendarEventSummaryService();
+        factory = new CalendarEventSummaryService(':');
         factory.setSummarySeparator(SEPARATOR);
     }
 

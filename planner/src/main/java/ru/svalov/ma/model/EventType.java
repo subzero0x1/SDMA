@@ -11,6 +11,8 @@ public enum EventType {
     TEMPWORK("TWK"),
     DAILY_DUTY("DD"),
     ARCH_DAILY_DUTY("ADD"),
+    RETAIL_DAILY_DUTY("RDD"),
+    RETAIL_FRONT_DAILY_DUTY("RFDD"),
     SICK("SIK"),
     BUILD("BLD"),
     REMOTE("RMT");

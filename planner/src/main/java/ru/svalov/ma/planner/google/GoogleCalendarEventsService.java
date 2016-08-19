@@ -2,6 +2,7 @@ package ru.svalov.ma.planner.google;
 
 import com.google.api.client.util.DateTime;
 import com.google.api.services.calendar.model.*;
+import org.springframework.beans.factory.annotation.Value;
 import ru.svalov.ma.model.CalendarEvent;
 import ru.svalov.ma.model.CalendarEvents;
 import ru.svalov.ma.planner.CalendarEventSummaryService;
@@ -32,6 +33,16 @@ public class GoogleCalendarEventsService implements CalendarEventsService {
     private GoogleCalendarEventFactory eventFactory;
     private CalendarEventSummaryService summaryService;
     private GoogleCalendarService calendarService;
+
+    public GoogleCalendarEventsService(String calendarId, int maxResults, int reminderMinutes, GoogleCalendarEventFactory eventFactory,
+                                       CalendarEventSummaryService summaryService, GoogleCalendarService calendarService) {
+        this.calendarId = calendarId;
+        this.maxResults = maxResults;
+        this.reminderMinutes = reminderMinutes;
+        this.eventFactory = eventFactory;
+        this.summaryService = summaryService;
+        this.calendarService = calendarService;
+    }
 
     public CalendarEvents get(LocalDate startDate, LocalDate endDate) {
         try {

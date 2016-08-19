@@ -1,0 +1,6 @@
+rootProject.name = 'management-assistant'
+include ':planner'
+include ':genplan'
+
+project(':planner').projectDir = "$rootDir/planner" as File
+project(':genplan').projectDir = "$rootDir/genplan" as File
