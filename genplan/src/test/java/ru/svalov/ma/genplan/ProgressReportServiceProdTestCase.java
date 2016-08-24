@@ -17,15 +17,15 @@ public class ProgressReportServiceProdTestCase extends AbstractTestNGSpringConte
 
     @SuppressWarnings("MismatchedQueryAndUpdateOfCollection")
     @Autowired
-    private Properties testProperties;
+    private Properties properties;
 
     @Test(enabled = false)
     public void testProcess() {
         UriComponentsBuilder builder = UriComponentsBuilder.fromHttpUrl(
-                testProperties.getProperty("pr.process.url")
+                properties.getProperty("pr.process.url")
         )
-                .queryParam("key", testProperties.getProperty("app.key"))
-                .queryParam("token", testProperties.getProperty("app.token"));
+                .queryParam("key", properties.getProperty("app.key"))
+                .queryParam("token", properties.getProperty("app.token"));
 
         System.out.println(progressReportService.build(builder.build().encode().toUri()));
     }
@@ -33,10 +33,10 @@ public class ProgressReportServiceProdTestCase extends AbstractTestNGSpringConte
     @Test(enabled = false)
     public void testDone() {
         UriComponentsBuilder builder = UriComponentsBuilder.fromHttpUrl(
-                testProperties.getProperty("pr.done.url")
+                properties.getProperty("pr.done.url")
         )
-                .queryParam("key", testProperties.getProperty("app.key"))
-                .queryParam("token", testProperties.getProperty("app.token"));
+                .queryParam("key", properties.getProperty("app.key"))
+                .queryParam("token", properties.getProperty("app.token"));
 
         System.out.println(progressReportService.build(builder.build().encode().toUri()));
     }

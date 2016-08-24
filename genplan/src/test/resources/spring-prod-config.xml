@@ -25,7 +25,7 @@
         <property name="projectCardFactory" ref="projectCardFactory"/>
     </bean>
 
-    <bean id="testProperties"
+    <bean id="properties"
           class="org.springframework.beans.factory.config.PropertiesFactoryBean">
         <property name="location" value="test.properties"/>
     </bean>

@@ -33,16 +33,16 @@ public class QuickStartTest extends AbstractTestNGSpringContextTests {
 
     @SuppressWarnings("MismatchedQueryAndUpdateOfCollection")
     @Autowired
-    private Properties testProperties;
+    private Properties properties;
 
     @Test(enabled = false)
     public void testInvokeTrello() {
 
         UriComponentsBuilder builder = UriComponentsBuilder.fromHttpUrl(
-                testProperties.getProperty("gp.board.url")
+                properties.getProperty("gp.board.url")
         )
-                .queryParam("key", testProperties.getProperty("app.key"))
-                .queryParam("token", testProperties.getProperty("app.token"));
+                .queryParam("key", properties.getProperty("app.key"))
+                .queryParam("token", properties.getProperty("app.token"));
 
         ResponseEntity<List<ProjectCard>> projects = restTemplate.exchange(
                 builder.build().encode().toUri(),
@@ -59,14 +59,14 @@ public class QuickStartTest extends AbstractTestNGSpringContextTests {
     public void testAddCard() {
 
         UriComponentsBuilder builder = UriComponentsBuilder.fromHttpUrl(
-                testProperties.getProperty("gp.cards.url")
+                properties.getProperty("gp.cards.url")
         )
-                .queryParam("key", testProperties.getProperty("app.key"))
-                .queryParam("token", testProperties.getProperty("app.token"));
+                .queryParam("key", properties.getProperty("app.key"))
+                .queryParam("token", properties.getProperty("app.token"));
 
         ProjectCard card = new ProjectCard();
-        card.setIdBoard(testProperties.getProperty("gp.board.id"));
-        card.setIdList(testProperties.getProperty("gp.list.go.id"));
+        card.setIdBoard(properties.getProperty("gp.board.id"));
+        card.setIdList(properties.getProperty("gp.list.go.id"));
         card.setDesc("test desc");
         card.setName("test name");
         card.setDue(new Date());
@@ -78,13 +78,13 @@ public class QuickStartTest extends AbstractTestNGSpringContextTests {
         );
 
         UriComponentsBuilder builderComments = UriComponentsBuilder.fromHttpUrl(
-                testProperties.getProperty("gp.cards.url")
+                properties.getProperty("gp.cards.url")
                         + "/"
                         + ret.getId()
                         + "/actions/comments"
         )
-                .queryParam("key", testProperties.getProperty("app.key"))
-                .queryParam("token", testProperties.getProperty("app.token"));
+                .queryParam("key", properties.getProperty("app.key"))
+                .queryParam("token", properties.getProperty("app.token"));
 
         MultiValueMap<String, Object> requestMap = new LinkedMultiValueMap<>();
         requestMap.add("text", "comment 1");

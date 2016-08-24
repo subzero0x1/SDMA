@@ -32,6 +32,6 @@
         <property name="location" value="test.properties"/>
     </bean>
 
-    <bean id="restTemplate" class="org.springframework.web.client.RestTemplate"/>
+    <bean id="restTemplate" class="org.springframework.web.client.RestTemplate"/> <!-- todo : mock -->
 
 </beans>

@@ -58,11 +58,12 @@ public class ProjectCardFactory {
                 .queryParam("key", properties.getProperty("app.key"))
                 .queryParam("token", properties.getProperty("app.token"));
 
-        return restTemplate.postForObject(
-                builder.build().encode().toUri(),
-                card,
-                ProjectCard.class
-        );
+        return null;
+//        return restTemplate.postForObject(
+//                builder.build().encode().toUri(),
+//                card,
+//                ProjectCard.class
+//        );
     }
 
 }
