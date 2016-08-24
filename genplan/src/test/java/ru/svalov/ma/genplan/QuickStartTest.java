@@ -6,6 +6,8 @@ import org.springframework.http.HttpMethod;
 import org.springframework.http.ResponseEntity;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.testng.AbstractTestNGSpringContextTests;
+import org.springframework.util.LinkedMultiValueMap;
+import org.springframework.util.MultiValueMap;
 import org.springframework.web.client.RestTemplate;
 import org.springframework.web.util.UriComponentsBuilder;
 import org.testng.annotations.Test;
@@ -84,9 +86,11 @@ public class QuickStartTest extends AbstractTestNGSpringContextTests {
                 .queryParam("key", testProperties.getProperty("app.key"))
                 .queryParam("token", testProperties.getProperty("app.token"));
 
+        MultiValueMap<String, Object> requestMap = new LinkedMultiValueMap<>();
+        requestMap.add("text", "comment 1");
         String c = restTemplate.postForObject(
                 builderComments.build().encode().toUri(),
-                "comment 1",
+                requestMap,
                 String.class
         );
 
@@ -96,7 +100,7 @@ public class QuickStartTest extends AbstractTestNGSpringContextTests {
     @Test(enabled = false)
     public void testReadInputData() {
 
-        final URL dataUrl = getClass().getClassLoader().getResource("status_report_data.csv");
+        final URL dataUrl = getClass().getClassLoader().getResource("status_report_data_sample.csv");
         if (dataUrl == null) {
             throw new IllegalStateException();
         }
