@@ -1,9 +1,11 @@
 package ru.svalov.ma.genplan.parser;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import ru.svalov.ma.genplan.ProjectCardFactory;
 import ru.svalov.ma.genplan.model.ProjectReport;
 
 import java.util.Map;
+import java.util.Properties;
 
 public class ProjectReportFactoryImpl implements ProjectReportFactory {
 
@@ -11,13 +13,17 @@ public class ProjectReportFactoryImpl implements ProjectReportFactory {
     private Map<Integer, ReportItemParser> itemParsers;
     private ProjectReport projectReport;
 
+    @SuppressWarnings("MismatchedQueryAndUpdateOfCollection")
+    @Autowired
+    private Properties properties;
+
     public void parseReportLine(String line) {
 
         if (line == null || line.length() == 0) {
             throw new IllegalArgumentException("line");
         }
 
-        String[] fields = line.split("@");
+        String[] fields = line.split(properties.getProperty("gp.report.field.delim"));
 
         if (ProjectReportFactory.isHead(fields)) {
             projectReport = new ProjectReport();

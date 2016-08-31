@@ -1,11 +1,26 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <beans xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-       xmlns="http://www.springframework.org/schema/beans"
-       xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd">
+       xmlns:context="http://www.springframework.org/schema/context" xmlns="http://www.springframework.org/schema/beans"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context.xsd">
 
     <bean id="progressReportService" class="ru.svalov.ma.progressreport.ProgressReportServiceImpl"/>
 
     <bean id="projectCardFactory" class="ru.svalov.ma.genplan.ProjectCardFactory"/>
+    <bean id="projectCardNameFactory" class="ru.svalov.ma.genplan.ProjectCardNameFactory"/>
+    <bean id="cardDescriptionFactory" class="ru.svalov.ma.genplan.ProjectCardDescriptionFactory"/>
+    <bean id="cardListRouterService" class="ru.svalov.ma.genplan.CardListRouterService">
+        <property name="phases">
+            <map>
+                <entry key="INIT" value="${gp.list.init.id}"/>
+                <entry key="PLAN" value="${gp.list.plan.id}"/>
+                <entry key="GO" value="${gp.list.go.id}"/>
+                <entry key="FIN" value="${gp.list.fin.id}"/>
+                <entry key="FROZEN" value="${gp.list.frozen.id}"/>
+                <entry key="CLOSE" value="${gp.list.close.id}"/>
+                <entry key="DELETED" value="${gp.list.deleted.id}"/>
+            </map>
+        </property>
+    </bean>
 
     <bean id="reportItemHeadParser" class="ru.svalov.ma.genplan.parser.ReportItemHeadParser"/>
     <bean id="reportItemCommentParser" class="ru.svalov.ma.genplan.parser.ReportItemCommentParser"/>
@@ -29,6 +44,7 @@
           class="org.springframework.beans.factory.config.PropertiesFactoryBean">
         <property name="location" value="test.properties"/>
     </bean>
+    <context:property-placeholder location="classpath:test.properties"/>
 
     <bean id="restTemplate" class="org.springframework.web.client.RestTemplate"/>
 

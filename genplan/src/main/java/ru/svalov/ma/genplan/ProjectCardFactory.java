@@ -13,12 +13,19 @@ import java.util.Properties;
 
 public class ProjectCardFactory {
 
-    // todo : inject ProjectCardNameFactory
-    // todo : inject ProjectCardDescriptionFactory
     // todo : create and inject ProjectCardCommentFactory
 
     @Autowired
     private RestTemplate restTemplate;
+
+    @Autowired
+    private CardListRouterService cardListRouterService;
+
+    @Autowired
+    private ProjectCardNameFactory projectCardNameFactory;
+
+    @Autowired
+    private ProjectCardDescriptionFactory projectCardDescriptionFactory;
 
     @SuppressWarnings("MismatchedQueryAndUpdateOfCollection")
     @Autowired
@@ -30,11 +37,9 @@ public class ProjectCardFactory {
 
         ProjectCard card = new ProjectCard();
         card.setIdBoard(properties.getProperty("gp.board.id"));
-        card.setIdList(properties.getProperty("gp.list.go.id"));
-
-        // todo : card.setName();
-        // todo : card.setDesc();
-
+        card.setIdList(cardListRouterService.getListId(projectReport.getPhase()));
+        card.setName(projectCardNameFactory.create(projectReport));
+        card.setDesc(projectCardDescriptionFactory.create(projectReport));
         card.setDue(getDueDate(projectReport));
 
         ProjectCard newCard = postCard(card);
@@ -58,12 +63,11 @@ public class ProjectCardFactory {
                 .queryParam("key", properties.getProperty("app.key"))
                 .queryParam("token", properties.getProperty("app.token"));
 
-        return null;
-//        return restTemplate.postForObject(
-//                builder.build().encode().toUri(),
-//                card,
-//                ProjectCard.class
-//        );
+        return restTemplate.postForObject(
+                builder.build().encode().toUri(),
+                card,
+                ProjectCard.class
+        );
     }
 
 }

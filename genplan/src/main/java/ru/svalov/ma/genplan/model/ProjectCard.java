@@ -3,7 +3,6 @@ package ru.svalov.ma.genplan.model;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
 import java.util.Date;
-import java.util.List;
 
 @JsonIgnoreProperties(ignoreUnknown = true)
 public class ProjectCard {
@@ -14,7 +13,6 @@ public class ProjectCard {
     private String idBoard;
     private String idList;
     private Date due;
-    private List<String> idLabels;
 
     public String getId() {
         return id;
@@ -62,13 +60,5 @@ public class ProjectCard {
 
     public void setDue(Date due) {
         this.due = due;
-    }
-
-    public List<String> getIdLabels() {
-        return idLabels;
-    }
-
-    public void setIdLabels(List<String> idLabels) {
-        this.idLabels = idLabels;
     }
 }

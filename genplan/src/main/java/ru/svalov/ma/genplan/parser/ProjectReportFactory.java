@@ -1,6 +1,6 @@
 package ru.svalov.ma.genplan.parser;
 
-public interface ProjectReportFactory {
+interface ProjectReportFactory {
 
     static boolean isHead(String[] fields) {
         return fields != null && fields.length == ReportItem.HEAD.getCount();
