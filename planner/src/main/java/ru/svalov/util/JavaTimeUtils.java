@@ -34,4 +34,8 @@ public class JavaTimeUtils {
                 .toInstant()
                 .toEpochMilli();
     }
+
+    public static boolean isInPeriod(LocalDate subject, LocalDate start, LocalDate end) {
+        return (subject.isAfter(start) || subject.isEqual(start)) && (subject.isBefore(end) || subject.isEqual(end));
+    }
 }

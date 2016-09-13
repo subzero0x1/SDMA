@@ -23,4 +23,40 @@ public class JavaTimeUtilsTestCase {
 
         assertEquals(JavaTimeUtils.toDateMilli(LocalDate.now()), calendar.getTimeInMillis());
     }
+
+    @Test
+    public void testIsInPeriodWhenItBetween() throws Exception {
+        LocalDate start = LocalDate.of(2016, 9, 12);
+        LocalDate end = LocalDate.of(2016, 10, 12);
+        LocalDate subj = LocalDate.of(2016, 9, 22);
+
+        assert JavaTimeUtils.isInPeriod(subj, start, end);
+    }
+
+    @Test
+    public void testIsInPeriodWhenItIsNotBetween() throws Exception {
+        LocalDate start = LocalDate.of(2016, 9, 12);
+        LocalDate end = LocalDate.of(2016, 10, 12);
+        LocalDate subj = LocalDate.of(2016, 9, 10);
+
+        assert !JavaTimeUtils.isInPeriod(subj, start, end);
+    }
+
+    @Test
+    public void testIsInPeriodWhenFirstDayOfPeriod() throws Exception {
+        LocalDate start = LocalDate.of(2016, 9, 12);
+        LocalDate end = LocalDate.of(2016, 10, 12);
+        LocalDate subj = LocalDate.of(2016, 9, 12);
+
+        assert JavaTimeUtils.isInPeriod(subj, start, end);
+    }
+
+    @Test
+    public void testIsInPeriodWhenLastDayOfPeriod() throws Exception {
+        LocalDate start = LocalDate.of(2016, 9, 12);
+        LocalDate end = LocalDate.of(2016, 10, 12);
+        LocalDate subj = LocalDate.of(2016, 10, 12);
+
+        assert JavaTimeUtils.isInPeriod(subj, start, end);
+    }
 }

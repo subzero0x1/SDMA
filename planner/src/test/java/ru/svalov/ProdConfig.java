@@ -13,6 +13,8 @@ import ru.svalov.ma.planner.*;
 import ru.svalov.ma.planner.google.GoogleCalendarEventFactory;
 import ru.svalov.ma.planner.google.GoogleCalendarEventsService;
 import ru.svalov.ma.planner.google.GoogleCalendarService;
+import ru.svalov.ma.planner.tempo.TempoService;
+import ru.svalov.ma.planner.tempo.VacationServiceImpl;
 
 import java.util.Arrays;
 
@@ -48,6 +50,15 @@ public class ProdConfig {
     private String retailFrontCalendarId;
     @Value("${retail.front.events.calendar.maxResults}")
     private Integer retailFrontCalendarMaxResults;
+
+    @Value("${tempo.labor.task.name}")
+    private String tempoLaborTaskName;
+    @Value("${jira.tempo.url}")
+    private String jiraTempoURL;
+    @Value("${jira.login}")
+    private String login;
+    @Value("${jira.password}")
+    private String password;
 
     @Bean
     public CalendarEventSummaryService calendarEventSummaryService() {
@@ -92,7 +103,7 @@ public class ProdConfig {
 
     @Bean
     public DailyDutyService dailyDutyService() {
-        return new DailyDutyService(laborEventsService(), holidayEventService());
+        return new DailyDutyService(laborEventsService(), holidayEventService(), vacationReplicationService());
     }
 
     @Bean
@@ -135,6 +146,21 @@ public class ProdConfig {
     public TeamDailyDutyService teamDailyDutyService() {
         return new TeamDailyDutyServiceImpl(dailyDutyService(), employeeService(), dailyDutyEventsService(), architectEventsService(),
                 retailEventsService(), retailFrontEventsService());
+    }
+
+    @Bean
+    public VacationServiceImpl laborTempoService() {
+        return new VacationServiceImpl(tempoLaborTaskName, tempoService());
+    }
+
+    @Bean
+    public TempoService tempoService() {
+        return new TempoService(jiraTempoURL, login, password);
+    }
+
+    @Bean
+    public VacationReplicationService vacationReplicationService() {
+        return new VacationReplicationService(holidayEventService(), laborTempoService());
     }
 
     @Bean

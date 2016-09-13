@@ -1,0 +1,84 @@
+[
+  {
+    "id": 11549,
+    "assignee": {
+      "key": "KorMA",
+      "type": "user"
+    },
+    "planItem": {
+      "key": "BSSSTDDEF-9562",
+      "id": 151214,
+      "type": "ISSUE",
+      "name": "BSSSTDDEF-9562",
+      "summary": "Август разработка. 2.2.0. Саппорт",
+      "description": "1748h\r\n\r\nНеобходима команда:\r\nКоробейников\r\nМихеев\r\nПоляков\r\nКоба\r\nГуськов\r\nЧирков\r\nБелов 50%\r\nМороз\r\n+ 2 человека ЧК\r\n\r\nСтарую бронь на август снять.",
+      "iconName": "Заявка на бронирование",
+      "iconUrl": "/secure/viewavatar?size=xsmall&avatarId=10300&avatarType=issuetype",
+      "projectKey": "BSSSTDDEF",
+      "projectColor": "#EC8E00",
+      "avatarUrls": {
+        "16x16": "/secure/projectavatar?size=xsmall&avatarId=10011",
+        "24x24": "/secure/projectavatar?size=small&avatarId=10011",
+        "32x32": "/secure/projectavatar?size=medium&avatarId=10011",
+        "48x48": "/secure/projectavatar?avatarId=10011"
+      },
+      "planItemUrl": "browse/BSSSTDDEF-9562",
+      "isResolved": true
+    },
+    "scope": {
+      "id": 541,
+      "type": "team"
+    },
+    "commitment": 100.0,
+    "start": "2016-08-01",
+    "end": "2016-08-28",
+    "seconds": 576000,
+    "created": "2016-05-23",
+    "createdBy": "KorAI",
+    "updated": "2016-07-28",
+    "updatedBy": "KorAI",
+    "recurrence": {
+      "endDate": "2016-05-23",
+      "rule": "NEVER"
+    }
+  },
+  {
+    "id": 10622,
+    "assignee": {
+      "key": "KorMA",
+      "type": "user"
+    },
+    "planItem": {
+      "key": "BSSCCOR",
+      "id": 10482,
+      "type": "PROJECT",
+      "name": "6721_BSS_999_CCORNOWORK",
+      "description": "",
+      "projectKey": "BSSCCOR",
+      "projectColor": "#ff0000",
+      "avatarUrls": {
+        "16x16": "/secure/projectavatar?size=xsmall&avatarId=10011",
+        "24x24": "/secure/projectavatar?size=small&avatarId=10011",
+        "32x32": "/secure/projectavatar?size=medium&avatarId=10011",
+        "48x48": "/secure/projectavatar?avatarId=10011"
+      },
+      "planItemUrl": "browse/BSSCCOR"
+    },
+    "scope": {
+      "id": 541,
+      "type": "team"
+    },
+    "commitment": 100.0,
+    "start": "2016-08-29",
+    "end": "2016-09-11",
+    "seconds": 288000,
+    "created": "2016-05-06",
+    "createdBy": "SvaDA",
+    "updated": "2016-05-06",
+    "updatedBy": "SvaDA",
+    "recurrence": {
+      "endDate": "2016-05-06",
+      "rule": "NEVER"
+    }
+  }
+]

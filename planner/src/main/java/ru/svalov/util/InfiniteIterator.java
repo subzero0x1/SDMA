@@ -1,5 +1,6 @@
 package ru.svalov.util;
 
+import java.util.Collections;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Objects;
@@ -15,7 +16,7 @@ public class InfiniteIterator<T> implements Iterator<T> {
     }
 
     public boolean hasNext() {
-        return list.size() > 0;
+        return !list.isEmpty();
     }
 
     public T next() {
@@ -23,5 +24,9 @@ public class InfiniteIterator<T> implements Iterator<T> {
             this.index = 0;
         }
         return hasNext() ? list.get(index++) : null;
+    }
+
+    public List<T> toImmutableList() {
+        return Collections.unmodifiableList(list);
     }
 }

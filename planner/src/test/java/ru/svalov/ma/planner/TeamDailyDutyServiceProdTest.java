@@ -3,14 +3,10 @@ package ru.svalov.ma.planner;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.testng.AbstractTestNGSpringContextTests;
-import org.testng.annotations.BeforeClass;
-import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.Test;
 import ru.svalov.ProdConfig;
 
 import java.time.LocalDate;
-
-import static org.testng.Assert.*;
 
 @ContextConfiguration(classes = ProdConfig.class)
 @Test(enabled = false)
@@ -19,7 +15,7 @@ public class TeamDailyDutyServiceProdTest extends AbstractTestNGSpringContextTes
     @Autowired
     TeamDailyDutyService teamDailyDutyService;
 
-    private final LocalDate startDate = LocalDate.of(2016, 8, 22);
+    private final LocalDate startDate = LocalDate.of(2016, 9, 15);
     private final LocalDate endDate = startDate.plusMonths(1);
 
 

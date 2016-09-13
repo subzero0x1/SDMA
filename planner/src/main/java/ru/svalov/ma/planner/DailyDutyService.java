@@ -2,7 +2,6 @@ package ru.svalov.ma.planner;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import ru.svalov.ma.data.EmployeesProvider;
 import ru.svalov.ma.model.*;
 import ru.svalov.util.InfiniteIterator;
 
@@ -10,7 +9,6 @@ import java.time.LocalDate;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Objects;
-import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
 import static java.time.temporal.ChronoUnit.DAYS;
@@ -22,13 +20,15 @@ public class DailyDutyService {
 
     private CalendarEventsService laborEventsService;
     private CalendarEventsService holidayEventsService;
+    private VacationReplicationService replicationService;
 
     private int historyLookupDays = 20;
     private boolean parallelDataLoad = false;
 
-    public DailyDutyService(CalendarEventsService laborEventsService, CalendarEventsService holidayEventsService) {
+    public DailyDutyService(CalendarEventsService laborEventsService, CalendarEventsService holidayEventsService, final VacationReplicationService replicationService) {
         this.laborEventsService = laborEventsService;
         this.holidayEventsService = holidayEventsService;
+        this.replicationService = replicationService;
     }
 
     private static boolean isEqualEvent(Employee employee, List<CalendarEvent> events) {
@@ -73,6 +73,8 @@ public class DailyDutyService {
             holidayEvents = holidayEventsService.get(startDate, endDate);
         }
 
+        replicationService.replicateVacations(empIt.toImmutableList(), startDate, endDate);
+
         CalendarEvents dailyDutyEvents = dailyDutyEventsService.get(startDate, endDate);
         return Stream.iterate(startDate, d -> d.plusDays(1))
                 .limit(startDate.until(endDate, DAYS))
@@ -80,7 +82,7 @@ public class DailyDutyService {
                             if (laborEvents.isWeekendOrHoliday(currentDate)) {
                                 deleteOutdatedEvents(dailyDutyEvents, currentDate, dailyDutyEventsService);
                             } else {
-                                return processDate(empIt, dailyDutyEvents, holidayEvents, currentDate, EventType.DAILY_DUTY, dailyDutyEventsService);
+                                return processDate(empIt, dailyDutyEvents, holidayEvents, currentDate, dailyDutyEventsService);
                             }
                             return 0;
                         }
@@ -88,9 +90,9 @@ public class DailyDutyService {
     }
 
     private int processDate(InfiniteIterator<Employee> empIt, CalendarEvents dailyDutyEvents, CalendarEvents holidayEvents, LocalDate currentDate,
-                          EventType dailyDuty, CalendarEventsService dailyDutyEventsService) {
+                            CalendarEventsService dailyDutyEventsService) {
         Employee employee = findNextForDailyDuty(empIt, holidayEvents, currentDate);
-        List<CalendarEvent> events = dailyDutyEvents.get(currentDate, dailyDuty);
+        List<CalendarEvent> events = dailyDutyEvents.get(currentDate, EventType.DAILY_DUTY);
         if (!isEqualEvent(employee, events)) {
             if (!events.isEmpty()) {
                 deleteOutdatedEvents(dailyDutyEvents, currentDate, dailyDutyEventsService);
@@ -155,10 +157,6 @@ public class DailyDutyService {
 
     public void setHistoryLookupDays(int historyLookupDays) {
         this.historyLookupDays = historyLookupDays;
-    }
-
-    public boolean isParallelDataLoad() {
-        return parallelDataLoad;
     }
 
     public void setParallelDataLoad(boolean parallelDataLoad) {
