@@ -53,6 +53,8 @@ public class DailyDutyService {
             throw new IllegalArgumentException("startDate is after endDate");
         }
 
+        replicationService.replicateVacations(empIt.toImmutableList(), startDate, endDate);
+
         LaborCalendarEvents laborEvents;
         CalendarEvents holidayEvents;
         if (parallelDataLoad) {
@@ -72,8 +74,6 @@ public class DailyDutyService {
             laborEvents = new LaborCalendarEvents(laborEventsService.get(startDate, endDate));
             holidayEvents = holidayEventsService.get(startDate, endDate);
         }
-
-        replicationService.replicateVacations(empIt.toImmutableList(), startDate, endDate);
 
         CalendarEvents dailyDutyEvents = dailyDutyEventsService.get(startDate, endDate);
         return Stream.iterate(startDate, d -> d.plusDays(1))

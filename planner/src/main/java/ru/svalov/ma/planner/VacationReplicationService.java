@@ -39,7 +39,10 @@ public class VacationReplicationService {
                 .limit(start.until(end, DAYS))
                 .forEach(currentDate -> {
                     final List<CalendarEvent> eventsToRemove = calendarEvents.get(currentDate, EventType.VACATION);
-                    eventsToRemove.forEach(ev -> holidayEventService.delete(ev.getId()));
+                    eventsToRemove.forEach(ev -> {
+                        final long usersCount = users.stream().filter(u -> u.getLogin().equals(ev.getSubject())).count();
+                        if (usersCount > 0) holidayEventService.delete(ev.getId());
+                    });
 
                     createNewVacationEvent(users, tempoLabors, currentDate);
                 });
