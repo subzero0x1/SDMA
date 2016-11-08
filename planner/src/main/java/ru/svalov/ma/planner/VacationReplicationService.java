@@ -48,10 +48,10 @@ public class VacationReplicationService {
                 });
     }
 
-    private void createNewVacationEvent(final List<Employee> users, final List<PlannedVacation> tempoLabors, final LocalDate currentDate) {
-        tempoLabors.stream().filter(labor -> JavaTimeUtils.isInPeriod(currentDate, labor.getStart(), labor.getEnd())).forEach
+    private void createNewVacationEvent(final List<Employee> users, final List<PlannedVacation> tempoVacs, final LocalDate currentDate) {
+        tempoVacs.stream().filter(vac -> JavaTimeUtils.isInPeriod(currentDate, vac.getStart(), vac.getEnd())).forEach
                 (plannedVacation -> {
-                    Optional<Employee> employee = users.stream().filter(user -> user.getLogin().equals(plannedVacation.getAssignee().getKey
+                    Optional<Employee> employee = users.stream().filter(user -> user.getLogin().equalsIgnoreCase(plannedVacation.getAssignee().getKey
                             ())).findFirst();
 
                     if (!employee.isPresent()) {
