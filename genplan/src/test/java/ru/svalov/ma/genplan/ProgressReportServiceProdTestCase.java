@@ -20,9 +20,9 @@ public class ProgressReportServiceProdTestCase extends AbstractTestNGSpringConte
     private Properties properties;
 
     @Test(enabled = false)
-    public void testProcess() {
+    public void testShared() {
         UriComponentsBuilder builder = UriComponentsBuilder.fromHttpUrl(
-                properties.getProperty("pr.process.url")
+                properties.getProperty("pr.shared.url")
         )
                 .queryParam("key", properties.getProperty("app.key"))
                 .queryParam("token", properties.getProperty("app.token"));
@@ -30,7 +30,7 @@ public class ProgressReportServiceProdTestCase extends AbstractTestNGSpringConte
         System.out.println(progressReportService.build(builder.build().encode().toUri()));
     }
 
-    @Test(enabled = true)
+    @Test(enabled = false)
     public void testDone() {
         UriComponentsBuilder builder = UriComponentsBuilder.fromHttpUrl(
                 properties.getProperty("pr.done.url")
