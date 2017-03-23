@@ -9,7 +9,7 @@ import ru.svalov.ma.progressreport.ProgressReportService;
 
 import java.util.Properties;
 
-@ContextConfiguration(locations = {"classpath:spring-test-config.xml"})
+@ContextConfiguration(locations = {"classpath:spring-prod-config.xml"})
 public class ProgressReportServiceProdTestCase extends AbstractTestNGSpringContextTests {
 
     @Autowired
@@ -30,7 +30,7 @@ public class ProgressReportServiceProdTestCase extends AbstractTestNGSpringConte
         System.out.println(progressReportService.build(builder.build().encode().toUri()));
     }
 
-    @Test(enabled = false)
+    @Test(enabled = true)
     public void testDone() {
         UriComponentsBuilder builder = UriComponentsBuilder.fromHttpUrl(
                 properties.getProperty("pr.done.url")
