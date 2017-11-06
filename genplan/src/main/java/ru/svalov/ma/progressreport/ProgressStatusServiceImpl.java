@@ -4,7 +4,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.ParameterizedTypeReference;
 import org.springframework.http.HttpMethod;
 import org.springframework.http.ResponseEntity;
-import org.springframework.util.StringUtils;
 import org.springframework.web.client.RestTemplate;
 import ru.svalov.ma.progressreport.model.ProgressReportItem;
 import ru.svalov.ma.progressreport.model.ProgressReportLabel;
@@ -15,19 +14,10 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-public class ProgressReportServiceImpl implements ProgressReportService {
-
-    private static final String NL = System.getProperty("line.separator");
+public class ProgressStatusServiceImpl implements ProgressService {
 
     @Autowired
     private RestTemplate restTemplate;
-
-    private static void append(StringBuilder builder, String text) {
-        if (!StringUtils.isEmpty(text)) {
-            builder.append(text);
-            builder.append(NL);
-        }
-    }
 
     @Override
     public String build(URI uri) {
@@ -76,9 +66,9 @@ public class ProgressReportServiceImpl implements ProgressReportService {
         // build report text
         StringBuilder builder = new StringBuilder();
         for (String idLabel : items.keySet()) {
-            append(builder, labelsCache.get(idLabel));
+            TextUtils.append(builder, labelsCache.get(idLabel));
             for (String desc : items.get(idLabel)) {
-                append(builder, desc);
+                TextUtils.append(builder, desc);
             }
         }
 
