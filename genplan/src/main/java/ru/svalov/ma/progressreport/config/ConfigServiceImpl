@@ -1,0 +1,39 @@
+package ru.svalov.ma.progressreport.config;
+
+public class ConfigServiceImpl implements ConfigService {
+
+
+    @Override
+    public List<Board> read() {
+
+        // todo : implement read from file
+
+        List<Board> boards = new ArrayList<>();
+
+        for (int i = 1; i <= 2; i++) {
+            Board board = new Board();
+            board.setId("B" + i);
+
+            Small small = new Small();
+            small.setId("S" + i);
+            board.setSmall(small);
+
+            Middle middle = new Middle();
+            middle.setId("M" + i);
+            board.setMiddle(middle);
+
+            Large large = new Large();
+            large.setId("L" + i);
+            board.setLarge(large);
+
+            Done done = new Done();
+            done.setId("D" + i);
+            board.setDone(done);
+
+            boards.add(board)
+        }
+
+        return Collections.unmodifiable(boards);
+    }
+
+}

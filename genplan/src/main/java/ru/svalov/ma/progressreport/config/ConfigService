@@ -1,0 +1,5 @@
+package ru.svalov.ma.progressreport.config;
+
+public interface ConfigService {
+    List<Board> read();
+}
