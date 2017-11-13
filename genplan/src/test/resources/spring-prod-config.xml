@@ -4,6 +4,8 @@
        xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context.xsd">
 
     <bean id="progressReportService" class="ru.svalov.ma.progressreport.ProgressServiceImpl"/>
+    <bean id="progressStatusReportService" class="ru.svalov.ma.progressreport.ProgressStatusServiceImpl"/>
+    <bean id="configService" class="ru.svalov.ma.progressreport.config.ConfigServiceImpl"/>
 
     <bean id="properties"
           class="org.springframework.beans.factory.config.PropertiesFactoryBean">

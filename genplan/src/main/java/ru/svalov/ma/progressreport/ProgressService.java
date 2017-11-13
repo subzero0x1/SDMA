@@ -1,9 +1,9 @@
 package ru.svalov.ma.progressreport;
 
-import java.net.URI;
+import ru.svalov.ma.progressreport.config.Board;
 
 public interface ProgressService {
 
-    String build(URI uri);
+    String build(Board board);
 
 }

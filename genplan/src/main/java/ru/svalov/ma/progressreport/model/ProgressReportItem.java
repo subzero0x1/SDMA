@@ -10,6 +10,7 @@ public class ProgressReportItem {
     private String desc;
     private List<String> idLabels = new ArrayList<>();
     private List<ProgressReportLabel> labels = new ArrayList<>();
+    private String idList;
 
     public String getDesc() {
         return desc;
@@ -33,5 +34,13 @@ public class ProgressReportItem {
 
     public void setLabels(List<ProgressReportLabel> labels) {
         this.labels = labels;
+    }
+
+    public String getIdList() {
+        return idList;
+    }
+
+    public void setIdList(String idList) {
+        this.idList = idList;
     }
 }

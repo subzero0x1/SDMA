@@ -6,6 +6,7 @@ import org.springframework.test.context.testng.AbstractTestNGSpringContextTests;
 import org.springframework.web.util.UriComponentsBuilder;
 import org.testng.annotations.Test;
 import ru.svalov.ma.progressreport.ProgressService;
+import ru.svalov.ma.progressreport.config.Board;
 
 import java.util.Properties;
 
@@ -13,7 +14,7 @@ import java.util.Properties;
 public class ProgressServiceProdTestCase extends AbstractTestNGSpringContextTests {
 
     @Autowired
-    private ProgressService progressService;
+    private ProgressService progressReportService;
 
     @SuppressWarnings("MismatchedQueryAndUpdateOfCollection")
     @Autowired
@@ -27,7 +28,9 @@ public class ProgressServiceProdTestCase extends AbstractTestNGSpringContextTest
                 .queryParam("key", properties.getProperty("app.key"))
                 .queryParam("token", properties.getProperty("app.token"));
 
-        System.out.println(progressService.build(builder.build().encode().toUri()));
+        Board board = new Board();
+        board.setUri(builder.build().encode().toUri());
+        System.out.println(progressReportService.build(board));
     }
 
     @Test(enabled = false)
@@ -38,7 +41,9 @@ public class ProgressServiceProdTestCase extends AbstractTestNGSpringContextTest
                 .queryParam("key", properties.getProperty("app.key"))
                 .queryParam("token", properties.getProperty("app.token"));
 
-        System.out.println(progressService.build(builder.build().encode().toUri()));
+        Board board = new Board();
+        board.setUri(builder.build().encode().toUri());
+        System.out.println(progressReportService.build(board));
     }
 
 }

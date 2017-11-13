@@ -5,10 +5,10 @@ import org.springframework.core.ParameterizedTypeReference;
 import org.springframework.http.HttpMethod;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.client.RestTemplate;
+import ru.svalov.ma.progressreport.config.Board;
 import ru.svalov.ma.progressreport.model.ProgressReportItem;
 import ru.svalov.ma.progressreport.model.ProgressReportLabel;
 
-import java.net.URI;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -20,13 +20,13 @@ public class ProgressServiceImpl implements ProgressService {
     private RestTemplate restTemplate;
 
     @Override
-    public String build(URI uri) {
-        if (uri == null) {
-            throw new IllegalArgumentException("uri");
+    public String build(Board board) {
+        if (board == null) {
+            throw new IllegalArgumentException("board");
         }
 
         ResponseEntity<List<ProgressReportItem>> re = restTemplate.exchange(
-                uri,
+                board.getUri(),
                 HttpMethod.GET,
                 null,
                 new ParameterizedTypeReference<List<ProgressReportItem>>() {

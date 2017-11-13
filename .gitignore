@@ -21,3 +21,4 @@ target
 # SDMA
 test.properties
 client_secret.json
+test_boards.xml
