@@ -8,9 +8,9 @@ import java.util.List;
 @XmlRootElement(name = "trello")
 public class Trello {
 
-    @XmlElement(name = "board")
     private List<Board> boards = new ArrayList<>();
 
+    @XmlElement(name = "board")
     public List<Board> getBoards() {
         return boards;
     }

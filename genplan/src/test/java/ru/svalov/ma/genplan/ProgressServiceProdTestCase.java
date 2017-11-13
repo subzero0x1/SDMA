@@ -29,7 +29,7 @@ public class ProgressServiceProdTestCase extends AbstractTestNGSpringContextTest
                 .queryParam("token", properties.getProperty("app.token"));
 
         Board board = new Board();
-        board.setUri(builder.build().encode().toUri());
+        board.setUri(builder.build().encode().toUri().toString());
         System.out.println(progressReportService.build(board));
     }
 
@@ -42,7 +42,7 @@ public class ProgressServiceProdTestCase extends AbstractTestNGSpringContextTest
                 .queryParam("token", properties.getProperty("app.token"));
 
         Board board = new Board();
-        board.setUri(builder.build().encode().toUri());
+        board.setUri(builder.build().encode().toUri().toString());
         System.out.println(progressReportService.build(board));
     }
 

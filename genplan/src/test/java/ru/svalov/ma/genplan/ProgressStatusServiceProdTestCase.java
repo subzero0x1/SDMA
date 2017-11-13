@@ -50,14 +50,14 @@ public class ProgressStatusServiceProdTestCase extends AbstractTestNGSpringConte
         List<Board> boards = configService.getBoards(sb.toString());
 
         for (Board board : boards) {
-            System.out.println("---");
+            System.out.println(board.getName());
             UriComponentsBuilder builder = UriComponentsBuilder.fromHttpUrl(
-                    board.getUri().toString()
+                    board.getUri().trim()
             )
                     .queryParam("key", properties.getProperty("app.key"))
                     .queryParam("token", properties.getProperty("app.token"));
 
-            board.setUri(builder.build().encode().toUri());
+            board.setUri(builder.build().encode().toUri().toString());
             System.out.println(progressStatusReportService.build(board));
         }
     }

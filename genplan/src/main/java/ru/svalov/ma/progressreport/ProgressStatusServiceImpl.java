@@ -39,8 +39,6 @@ public class ProgressStatusServiceImpl implements ProgressService {
         int doneL = 0;
         for (ProgressReportItem item : re.getBody()) {
 
-            // todo : board name
-
             if (board.getDone().getId().equals(item.getIdList())) {
                 if (item.getIdLabels().contains(board.getSmall().getId())) {
                     doneS++;
@@ -49,7 +47,7 @@ public class ProgressStatusServiceImpl implements ProgressService {
                 } else if (item.getIdLabels().contains(board.getLarge().getId())) {
                     doneL++;
                 }
-            } else {
+            } else if (item.getIdLabels().contains(board.getWeek().getId())) {
                 if (item.getIdLabels().contains(board.getSmall().getId())) {
                     undoneS++;
                 } else if (item.getIdLabels().contains(board.getMiddle().getId())) {

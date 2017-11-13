@@ -1,34 +1,29 @@
 package ru.svalov.ma.progressreport.config;
 
 import javax.xml.bind.annotation.XmlElement;
-import java.net.URI;
+import javax.xml.bind.annotation.XmlType;
 
+@XmlType
 public class Board {
 
     // properties
 
-    @XmlElement
+
     private String name;
-    @XmlElement
-    private URI uri;
+    private String uri;
 
     // lists
 
-    @XmlElement
     private Done done;
 
     // labels
 
-    @XmlElement
     private Small small;
-    @XmlElement
     private Middle middle;
-    @XmlElement
     private Large large;
-    @XmlElement
     private Week week;
 
-
+    @XmlElement
     public String getName() {
         return name;
     }
@@ -37,14 +32,16 @@ public class Board {
         this.name = name;
     }
 
-    public URI getUri() {
+    @XmlElement
+    public String getUri() {
         return uri;
     }
 
-    public void setUri(URI uri) {
+    public void setUri(String uri) {
         this.uri = uri;
     }
 
+    @XmlElement
     public Done getDone() {
         return done;
     }
@@ -53,6 +50,7 @@ public class Board {
         this.done = done;
     }
 
+    @XmlElement
     public Small getSmall() {
         return small;
     }
@@ -61,6 +59,7 @@ public class Board {
         this.small = small;
     }
 
+    @XmlElement
     public Middle getMiddle() {
         return middle;
     }
@@ -69,6 +68,7 @@ public class Board {
         this.middle = middle;
     }
 
+    @XmlElement
     public Large getLarge() {
         return large;
     }
@@ -77,6 +77,7 @@ public class Board {
         this.large = large;
     }
 
+    @XmlElement
     public Week getWeek() {
         return week;
     }

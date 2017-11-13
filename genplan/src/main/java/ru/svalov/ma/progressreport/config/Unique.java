@@ -4,9 +4,10 @@ import javax.xml.bind.annotation.XmlAttribute;
 
 public abstract class Unique {
 
-    @XmlAttribute
+
     private String id;
 
+    @XmlAttribute
     public String getId() {
         return id;
     }
