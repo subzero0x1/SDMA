@@ -8,9 +8,7 @@ import org.springframework.web.client.RestTemplate;
 import ru.svalov.ma.progressreport.config.Board;
 import ru.svalov.ma.progressreport.model.ProgressReportItem;
 
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 public class ProgressStatusServiceImpl implements ProgressService {
 
@@ -34,25 +32,26 @@ public class ProgressStatusServiceImpl implements ProgressService {
         int undoneS = 0, undoneM = 0, undoneL = 0;
         int doneS = 0, doneM = 0, doneL = 0;
 
-        boolean done = false;
+        boolean done, week;
         for (ProgressReportItem item : re.getBody()) {
             done = board.getDone().getId().equals(item.getIdList());
+            week = item.getIdLabels().contains(board.getWeek().getId());
             if (item.getIdLabels().contains(board.getSmall().getId())) {
                 if(done) {
                     doneS++;
-                } else {
+                } else if (week) {
                     undoneS++;
                 }
             } else if (item.getIdLabels().contains(board.getMiddle().getId())) {
                 if(done) {
                     doneM++;
-                } else {
+                } else if (week) {
                     undoneM++;
                 }
             } else if (item.getIdLabels().contains(board.getLarge().getId())) {
                 if(done) {
                     doneL++;
-                } else {
+                } else if (week) {
                     undoneL++;
                 }
             }
